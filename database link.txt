@@ -1,0 +1,1 @@
+https://console.firebase.google.com/u/0/project/fridge2022-97f09/database/fridge2022-97f09-default-rtdb/data

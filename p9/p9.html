@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+	<title></title>
+<!--
+	<link rel="icon" 
+		  type="image/png" 
+		  href="ICON.png">
+-->		  
+	<link rel="stylesheet" href="p9styles.css">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+
+</head>
+
+<body>
+	<header>
+		<img src="logo.png" alt="logo" style="height:120px;">
+	</header>
+
+	<section>
+		<aside>
+			<ol>
+				<li id="a1"></li>
+				<li id="a2"></li>
+				<li id="a3"></li>
+				<li id="a4"></li>
+				<li id="a5"></li>
+				<li id="a6"></li>
+				<li id="a7"></li>
+				<li id="a8"></li>
+				<li id="a9" style="color:Red;"></li>
+				<li id="a10"></li>
+			</ol>
+		</aside>
+	  
+		<article>
+			<div style="height:150px;padding:50px;font-size:180%;"> 國家1 國家2 國家3 國家4 國家5 國家6 = ? ? </div>
+			<div style="height:70px;padding:20px;"><span style="font-size:200%;margin-right:40px"> 名字 </span><input type="text" id="namebar" placeholder="Name"></div>
+			<div style="height:90px;padding:20px;"><span style="font-size:200%;margin-right:40px"> 答案 </span><input type="text" id="ansbar" placeholder="Answer"></div>
+			<span style="margin-right:20px"></span>
+			<button id="submitbtn" onclick="submit()" class="smbtn"> Submit! </button>
+			<div id="showbar1" class="showbar1"></div>
+			<div id="showbar2" class="showbar2"></div>
+		</article>
+	</section>
+
+	<script>var name = '';</script>
+	<script>
+		function submit() { 
+			name = document.getElementById("namebar").value;
+			if (name == '' || name.includes('.') || name.includes('\\') || name.includes('/')){
+				return ;
+			}
+			var ans = document.getElementById("ansbar").value;
+			document.getElementById("ansbar").value = "";
+			document.getElementById("showbar1").innerHTML = "";
+			document.getElementById("showbar2").innerHTML = "";
+			if (ans == '17'){
+				Correct(9);
+				document.getElementById('showbar1').innerHTML = "Correct!";
+			}
+			else{
+				document.getElementById('showbar2').innerHTML = "Wrong!";
+			}
+		}
+	</script>
+
+
+<!-- template start -->
+	<script>
+		function Correct(n){
+			database.ref('/').once('value',e=>{
+				data = e.val();
+				if(data.hasOwnProperty(name)){
+					if (data[name]['p' + n.toString()]['correct'] == 0){
+						database.ref(name + '/p' + n.toString()).set({correct:1, time: (new Date()).toString()});
+					}
+					else {
+						database.ref('nonempty').set((new Date()).toString());
+					}
+				}
+				else{
+					var newobj = {
+						p1:{correct:0, time:""},
+						p2:{correct:0, time:""},
+						p3:{correct:0, time:""},
+						p4:{correct:0, time:""},
+						p5:{correct:0, time:""},
+						p6:{correct:0, time:""},
+						p7:{correct:0, time:""},
+						p8:{correct:0, time:""},
+						p9:{correct:0, time:""},
+						p10:{correct:0, time:""}
+					};
+					newobj['p' + n.toString()] = {correct:1, time: (new Date()).toString()};
+					database.ref('/' + name).set(newobj);
+				}
+			});
+		}
+	</script>
+	<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+	<script>
+		firebase.initializeApp({
+		  databaseURL: "https://fridge2022-97f09-default-rtdb.firebaseio.com/"
+		});
+		const database = firebase.database();
+	</script>
+	<script>
+		database.ref('/').on('value',e=>{
+			data = e.val();
+			if (!(name == '' || name.includes('.') || name.includes('\\') || name.includes('/'))){
+				if(data.hasOwnProperty(name)){
+					if(data[name]['p1']['correct'] == 1){
+						document.getElementById("a1").innerHTML = "&#9989";
+					}
+					if(data[name]['p2']['correct'] == 1){
+						document.getElementById("a2").innerHTML = "&#9989";
+					}
+					if(data[name]['p3']['correct'] == 1){
+						document.getElementById("a3").innerHTML = "&#9989";
+					}
+					if(data[name]['p4']['correct'] == 1){
+						document.getElementById("a4").innerHTML = "&#9989";
+					}
+					if(data[name]['p5']['correct'] == 1){
+						document.getElementById("a5").innerHTML = "&#9989";
+					}
+					if(data[name]['p6']['correct'] == 1){
+						document.getElementById("a6").innerHTML = "&#9989";
+					}
+					if(data[name]['p7']['correct'] == 1){
+						document.getElementById("a7").innerHTML = "&#9989";
+					}
+					if(data[name]['p8']['correct'] == 1){
+						document.getElementById("a8").innerHTML = "&#9989";
+					}
+					if(data[name]['p9']['correct'] == 1){
+						document.getElementById("a9").innerHTML = "&#9989";
+					}
+					if(data[name]['p10']['correct'] == 1){
+						document.getElementById("a10").innerHTML = "&#9989";
+					}
+				}
+			}
+		});
+	</script>
+<!-- template end -->
+
+</body>
+
+</html>
+
+<!-- end -->
